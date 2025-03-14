@@ -4,4 +4,5 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+image = { git = "https://github.com/image-rs/image", version = "0.25.5" }
 rtiow = { git = "https://github.com/cbiffle/rtiow-rust/", version = "0.1.0" }
