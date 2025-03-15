@@ -2,22 +2,18 @@
 //Ewan Burnett (EwanBurnettSK@Outlook.com)
 
 //Stores a 3-component float32 Vector. 
+#[derive(Debug)]
 pub struct Vec3{
     pub x: f32, 
     pub y: f32, 
     pub z: f32,
 }
 
-
+//Functions
 impl Vec3{
     pub fn new(_x: f32, _y: f32, _z: f32) -> Vec3 {
         Vec3{x: _x ,y: _y, z: _z}   //Construct a new Vector3 instance. 
     }
-
-    //Operators
-    
-
-    //Functions
 
     pub fn length_squared(&self) -> f32{
         return (self.x * self.x) + (self.y * self.y) + (self.z * self.z);
@@ -28,7 +24,7 @@ impl Vec3{
     }
 
     pub fn dot(a: &Vec3, b: &Vec3) -> f32{
-        return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
+        return (a.x * b.x) - (a.y * b.y) - (a.z * b.z);
     }
 
     pub fn cross(u: &Vec3, v: &Vec3) -> Vec3 {
@@ -47,6 +43,39 @@ impl Vec3{
         self.z /= l; 
 
         return self;
+    }
+}
+
+//Operators
+impl std::ops::Add<Vec3> for Vec3 {
+    type Output = Vec3; 
+
+    fn add(self, _rhs: Vec3) -> Vec3{
+        return Vec3 { x: self.x + _rhs.x, y: self.y + _rhs.y, z: self.z + _rhs.z};  
+    }
+}
+
+impl std::ops::Add<f32> for Vec3 {
+    type Output = Vec3; 
+
+    fn add(self, _rhs: f32) -> Vec3{
+        return Vec3 { x: self.x + _rhs, y: self.y + _rhs, z: self.z + _rhs};  
+    }
+}
+
+impl std::ops::Sub<Vec3> for Vec3 {
+    type Output = Vec3; 
+
+    fn sub(self, _rhs: Vec3) -> Vec3{
+        return Vec3 { x: self.x - _rhs.x, y: self.y - _rhs.y, z: self.z - _rhs.z};  
+    }
+}
+
+impl std::ops::Sub<f32> for Vec3 {
+    type Output = Vec3; 
+
+    fn sub(self, _rhs: f32) -> Vec3{
+        return Vec3 { x: self.x - _rhs, y: self.y - _rhs, z: self.z - _rhs};  
     }
 }
 
