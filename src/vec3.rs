@@ -14,6 +14,10 @@ impl Vec3{
         Vec3{x: _x ,y: _y, z: _z}   //Construct a new Vector3 instance. 
     }
 
+    //Operators
+    
+
+    //Functions
 
     pub fn length_squared(&self) -> f32{
         return (self.x * self.x) + (self.y * self.y) + (self.z * self.z);
@@ -33,6 +37,16 @@ impl Vec3{
             y : u.x * v.z - u.z * v.x,
             z : u.x * v.y - u.y * v.z,
         }
+    }
+
+    pub fn normalize(&mut self) -> &mut Self{ 
+        let l : f32 = Vec3::length(self);
+
+        self.x /= l;
+        self.y /= l; 
+        self.z /= l; 
+
+        return self;
     }
 }
 
