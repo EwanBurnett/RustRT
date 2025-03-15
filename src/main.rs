@@ -1,6 +1,6 @@
 use std::f32::consts::PI;
 
-use RustRT::vec3::{self, Vec3};
+use RustRT::{vec3::{self, Vec3}, renderer::render, camera};
 
 
 fn main() {
@@ -21,11 +21,12 @@ fn main() {
 
         let sum = v0 - v1; 
         println!("sum = {}, {}, {}", sum.x, sum.y, sum.z);
-
-
     }
 
 
+    let origin = Vec3::new(0.0, 0.0, 0.0); 
+    let dir = Vec3::new(0.0, 0.0, -1.0); 
+    let cam = RustRT::camera::Camera::new(origin, dir);
 
     //Configure the output image buffer
     let image_width = 256; 
@@ -33,7 +34,7 @@ fn main() {
 
     let mut image_buffer: image::ImageBuffer<image::Rgb<u8>, Vec<u8>> = image::ImageBuffer::new(image_width, image_height); 
 
-    RustRT::render(&mut image_buffer); 
+    render(&mut image_buffer); 
 
     image_buffer.save("image.png").unwrap(); 
 }

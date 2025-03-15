@@ -2,7 +2,7 @@
 //Ewan Burnett (EwanBurnettSK@Outlook.com)
 
 //Stores a 3-component float32 Vector. 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct Vec3{
     pub x: f32, 
     pub y: f32, 
@@ -14,6 +14,7 @@ impl Vec3{
     pub fn new(_x: f32, _y: f32, _z: f32) -> Vec3 {
         Vec3{x: _x ,y: _y, z: _z}   //Construct a new Vector3 instance. 
     }
+
 
     pub fn length_squared(&self) -> f32{
         return (self.x * self.x) + (self.y * self.y) + (self.z * self.z);
@@ -35,14 +36,14 @@ impl Vec3{
         }
     }
 
-    pub fn normalize(&mut self) -> &mut Self{ 
+    pub fn normalize(&mut self) -> Self{ 
         let l : f32 = Vec3::length(self);
 
         self.x /= l;
         self.y /= l; 
         self.z /= l; 
 
-        return self;
+        return *self;
     }
 }
 
