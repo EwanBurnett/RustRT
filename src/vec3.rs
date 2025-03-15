@@ -15,26 +15,24 @@ impl Vec3{
     }
 
 
-    pub fn length_squared(v : &Vec3) -> f32{
-        return (v.x * v.x) + (v.y * v.y) + (v.z * v.z);
+    pub fn length_squared(&self) -> f32{
+        return (self.x * self.x) + (self.y * self.y) + (self.z * self.z);
     }
 
-    /*
-    pub fn length(v: &Vec3) -> f32{
-        return sqrt(Vec3::length_squared(&v));
+    pub fn length(&self) -> f32{
+        return Vec3::length_squared(&self).sqrt();
     }
-   */
 
     pub fn dot(a: &Vec3, b: &Vec3) -> f32{
         return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
     }
 
-    pub fn cross(u: &Vec3, v: &Vec3) {  //-> Vec3
-        /*
-        x : u.y * v.z - u.z * v.y, 
-        y : u.x * v.z - u.z * v.x,
-        z : u.x * v.y - u.y * v.z,
-        */
+    pub fn cross(u: &Vec3, v: &Vec3) -> Vec3 {
+        Vec3{
+            x : u.y * v.z - u.z * v.y, 
+            y : u.x * v.z - u.z * v.x,
+            z : u.x * v.y - u.y * v.z,
+        }
     }
 }
 
@@ -58,14 +56,62 @@ mod test{
     }
 
     #[test]
+    fn vec3_length(){
+        let epsilon = f32::EPSILON;     //Comparison epsilon 
+
+        //Length of an arbitrary vector
+        let mut v: Vec3 = Vec3::new(1.0, 2.0, 3.0); 
+        let mut l: f32 = v.length(); 
+        let mut e: f32 = f32::sqrt(14.0);
+
+        assert_eq!(l >= (e - epsilon) && l < (e + epsilon), true); 
+        
+        //Length of a unit length vector = 1! 
+        v = Vec3::new(f32::sin(60.0), 0.0, f32::cos(60.0)); 
+        l = v.length();
+        e = 1.0;         
+
+        assert_eq!(l >= (e - epsilon), true); 
+        assert_eq!(l <= (e + epsilon), true); 
+    }
+
+    #[test]
     fn vec3_length_squared(){
-        assert_eq!(true, true);
+        let epsilon = f32::EPSILON;     //Comparison epsilon 
+
+        //Length of an arbitrary vector
+        let v: Vec3 = Vec3::new(1.0, 2.0, 3.0); 
+        let l: f32 = v.length_squared(); 
+        let e: f32 = 14.0;
+
+        assert_eq!(l >= (e - epsilon), true); 
+        assert_eq!(l <= (e + epsilon), true); 
+    }
+
+    #[test]
+    fn vec3_cross_vec3(){ 
+        //The Cross product of two vectors yields a vector perpendicular to them. 
+        let v0 : Vec3 = Vec3::new(1.0, 0.0, 0.0); 
+        let v1 : Vec3 = Vec3::new(0.0, 1.0, 0.0); 
+
+        let x = Vec3::cross(&v0, &v1);  //Ordering does matter!
+
+        assert_eq!(x.x, 0.0); 
+        assert_eq!(x.y, 0.0); 
+        assert_eq!(x.z, 1.0); 
+        
     }
 
 
     #[test]
     fn vec3_dot_vec3(){
-        assert_eq!(true, true);
+        //The Dot product of two vectors yields the cosine of the angle between them. 
+        let v0 : Vec3 = Vec3::new(0.0, 1.0, 1.0); 
+        let v1 : Vec3 = Vec3::new(1.0, 0.0, 1.0); 
+
+        let theta: f32 = Vec3::dot(&v0, &v1); 
+
+        assert_eq!(theta, 1.0); 
     }
     
 
