@@ -1,5 +1,6 @@
 
 use crate::vec3::Vec3; 
+use crate::ray::Ray; 
 
 pub struct Camera
 {
@@ -33,9 +34,14 @@ impl Camera{
             origin.x, origin.y, origin.z
         );
 
-        
-
         return Camera{origin, up, right, forwards}; 
+    }
+
+    pub fn gen_ray(&self, dx: f32, dy: f32) -> Ray{ 
+        let origin =  Vec3::new(0.0, 0.0, 0.0); 
+        let direction = ((self.right * dx) + (self.up * dy) + self.forwards).normalize(); 
+
+        return Ray{origin, direction};
     }
     
 }

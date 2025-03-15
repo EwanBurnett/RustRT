@@ -80,6 +80,21 @@ impl std::ops::Sub<f32> for Vec3 {
     }
 }
 
+impl std::ops::Mul<f32> for Vec3 {
+    type Output = Vec3; 
+
+    fn mul(self, _rhs: f32) -> Vec3{
+        return Vec3 { x: self.x * _rhs, y: self.y * _rhs, z: self.z * _rhs};  
+    }
+}
+
+impl std::ops::Div<f32> for Vec3 {
+    type Output = Vec3; 
+
+    fn div(self, _rhs: f32) -> Vec3{
+        return Vec3 { x: self.x / _rhs, y: self.y / _rhs, z: self.z / _rhs};  
+    }
+}
 
 //Unit Tests
 #[cfg(test)]
