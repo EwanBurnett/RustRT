@@ -1,5 +1,4 @@
 
-use crate::primitive::Primitive; 
 use crate::vec3::Vec3; 
 use crate::ray::Ray; 
 use crate::rayhit::RayHit; 
@@ -16,24 +15,17 @@ impl Sphere{
    pub fn new(position: Vec3, radius: f32) -> Sphere{
     Sphere{position, radius} 
    } 
-   /*
-}
 
-impl Primitive for Sphere{
-*/
-pub fn intersects(&self, ray: &Ray, rayhit: &mut RayHit) -> bool {
-    //Red sphere of justice!
+    pub fn intersects(&self, ray: &Ray, rayhit: &mut RayHit) -> bool {
         let pos = self.position; 
         let radius= self.radius;
         {
-            
             let to_center = (ray.origin - pos); 
-            //println!("to_center = {}, {}, {}", to_center.x, to_center.y, to_center.z); 
+
             let s_a = Vec3::dot(&ray.direction, &ray.direction); 
             let s_b = 2.0 * Vec3::dot(&ray.direction, &to_center); 
             let s_c = Vec3::dot(&to_center, &to_center) - (radius * radius); 
     
-            //println!("a: {}, b: {}, c: {}", s_a, s_b, s_c); 
             let mut t_min: f32 = 0.0; 
             let mut t_max: f32 = 0.0; 
     
@@ -55,17 +47,9 @@ pub fn intersects(&self, ray: &Ray, rayhit: &mut RayHit) -> bool {
             rayhit.normal = (rayhit.position - pos).normalize();
     
             //TODO: Spherical projection helper functions
-            rayhit.uv.x = (f32::atan2(rayhit.position.y, rayhit.position.x) + PI) / (2.0 * PI);      //Use the Mercator Projection.
             let lat = f32::atan2(rayhit.position.z, f32::sqrt((rayhit.position.x * rayhit.position.x) + (rayhit.position.y * rayhit.position.y))); 
-    
-            rayhit.uv.y = (f32::log10(
-                f32::tan(
-                    (lat / 2.0) + (PI / 4.0)
-                )
-            )
-         + PI) / (2.0 * PI); 
-           
-    
+            rayhit.uv.x = (f32::atan2(rayhit.position.y, rayhit.position.x) + PI) / (2.0 * PI);      //Use the Mercator Projection.
+            rayhit.uv.y = (f32::log10(f32::tan((lat / 2.0) + (PI / 4.0))) + PI) / (2.0 * PI); 
     
             return true;
         }
