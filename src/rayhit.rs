@@ -5,6 +5,7 @@ pub struct RayHit{
     pub position : Vec3, 
     pub normal : Vec3, 
     pub uv : Vec3, 
+    pub t : f32,
 }
 
 impl RayHit{
@@ -13,6 +14,7 @@ impl RayHit{
             position: Vec3{x: 0.0, y: 0.0, z: 0.0},
             normal: Vec3{x: 0.0, y: 0.0, z: 0.0},
             uv: Vec3{x: 0.0, y: 0.0, z: 0.0},
+            t: 0.0, 
         }
     }
 }

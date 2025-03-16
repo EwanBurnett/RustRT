@@ -39,8 +39,8 @@ fn main() {
     let mut image_buffer: image::ImageBuffer<image::Rgb<u8>, Vec<u8>> = image::ImageBuffer::new(image_width, image_height); 
 
     let mut scene : Vec<Sphere> = vec![]; 
-    for i in 1..10{
-        scene.push(Sphere::new(Vec3{x: f32::sin((i - 5) as f32), y: f32::cos(i as f32), z: 0.0}, 0.2));
+    for i in 0..10{
+        scene.push(Sphere::new(Vec3{x: 0.0, y: f32::cos(i as f32) * 2.0, z: f32::sin((i - 5) as f32)}, 0.5));
     } 
 
     render(&cam, &mut scene, &mut image_buffer); 

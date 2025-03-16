@@ -50,6 +50,7 @@ pub fn intersects(&self, ray: &Ray, rayhit: &mut RayHit) -> bool {
                 }
             }
     
+            rayhit.t = t; 
             rayhit.position = ray.at(t); 
             rayhit.normal = (rayhit.position - pos).normalize();
     

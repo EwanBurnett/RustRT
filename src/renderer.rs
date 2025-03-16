@@ -1,4 +1,5 @@
 
+use std::f32::INFINITY;
 use std::f32::consts::PI;
 
 use std::vec;
@@ -52,6 +53,8 @@ pub fn render(camera : &Camera, scene : &Vec<Sphere>, img_buf: &mut ImageBuffer<
         );
         */
 
+        let mut max_depth = INFINITY; 
+
         for sphere in scene {
             let mut ray_hit : RayHit = RayHit::new();  
             if(sphere.intersects(&r, &mut ray_hit))
@@ -62,13 +65,17 @@ pub fn render(camera : &Camera, scene : &Vec<Sphere>, img_buf: &mut ImageBuffer<
                 //p = ray_hit.uv; 
 
                 //Apply some simple lambertian lighting
-                let light_dir : Vec3 = Vec3::new(0.5, 0.5, 0.5); 
-                let light_colour : Vec3 = Vec3::new(0.7, 0.7, 0.7); 
-                let light_intensity : f32 = 1.0; 
+                if(ray_hit.t < max_depth){
+                    max_depth = ray_hit.t; 
+                    //println!("Depth = {}!", max_depth); 
+                    let light_dir : Vec3 = Vec3::new(0.5, 0.5, 0.5); 
+                    let light_colour : Vec3 = Vec3::new(0.7, 0.7, 0.7); 
+                    let light_intensity : f32 = 1.0; 
 
-                let n_dot_l : f32 = f32::max(Vec3::dot(&light_dir, &ray_hit.normal), 0.0); 
+                    let n_dot_l : f32 = f32::max(Vec3::dot(&light_dir, &ray_hit.normal), 0.0); 
 
-                p =   (light_colour * light_intensity * n_dot_l); 
+                    p = (light_colour * light_intensity * n_dot_l); 
+                }
 
             }
         }
