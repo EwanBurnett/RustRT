@@ -5,6 +5,7 @@ use image::ImageBuffer;
 use crate::vec3::Vec3; 
 use crate::ray::Ray;
 use crate::camera::Camera; 
+use crate::rayhit::RayHit; 
 
 
 fn solve_quadratic(a: &f32, b: &f32, c: &f32, t_min: &mut f32, t_max: &mut f32) -> bool {
@@ -35,7 +36,7 @@ fn solve_quadratic(a: &f32, b: &f32, c: &f32, t_min: &mut f32, t_max: &mut f32) 
     return true; 
 }
 
-fn ray_sphere_intersects(ray: &Ray) -> bool{
+fn ray_sphere_intersects(ray: &Ray, hit_result: &mut RayHit) -> bool{
     //Red sphere of justice!
     let pos = Vec3::new(0.0, 0.0, 0.0); 
     let radius: f32 = 1.0; 
@@ -64,6 +65,22 @@ fn ray_sphere_intersects(ray: &Ray) -> bool{
             }
         }
 
+        hit_result.position = ray.at(t); 
+        hit_result.normal = (hit_result.position - pos).normalize();
+
+        //TODO: Spherical projection helper functions
+        hit_result.uv.x = (f32::atan2(hit_result.position.y, hit_result.position.x) + PI) / (2.0 * PI);      //Use the Mercator Projection.
+        let lat = f32::atan2(hit_result.position.z, f32::sqrt((hit_result.position.x * hit_result.position.x) + (hit_result.position.y * hit_result.position.y))); 
+
+        hit_result.uv.y = (f32::log10(
+            f32::tan(
+                (lat / 2.0) + (PI / 4.0)
+            )
+        )
+     + PI) / (2.0 * PI); 
+       
+
+
         return true;
     }
 }
@@ -86,7 +103,7 @@ pub fn render(camera : &Camera, img_buf: &mut ImageBuffer<image::Rgb<u8>, Vec<u8
         //Generate a ray per pixel, taking into account image aspect ratio. 
         
         //Field of View in radians
-        let fov_y : f32 = 110.0 * PI / 180.0; //TODO Camera FoV
+        let fov_y : f32 = 30.0 * PI / 180.0; //TODO Camera FoV
         let fov_x = 2.0 * f32::atan(f32::tan(fov_y * 0.5) * aspect_ratio); 
 
         let alpha = 4.0 * f32::tan(fov_x / 2.0) * ((x as f32 - (width as f32 / 2.0) )/ (width as f32 / 2.0));
@@ -103,10 +120,13 @@ pub fn render(camera : &Camera, img_buf: &mut ImageBuffer<image::Rgb<u8>, Vec<u8
         );
         */
 
-        if(ray_sphere_intersects(&r))
+        let mut ray_hit : RayHit = RayHit::new();  
+        if(ray_sphere_intersects(&r, &mut ray_hit))
         {
             //println!("ray!");
-            p.x = 1.0; 
+            p = ray_hit.position; 
+            //p = ray_hit.normal; 
+            //p = ray_hit.uv; 
         }
 
 
