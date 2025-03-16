@@ -27,13 +27,13 @@ fn main() {
 
 
     //Set up the Camera
-    let origin = Vec3::new(0.0, 0.0, 0.0); 
+    let origin = Vec3::new(0.0, 0.0, 2.0); 
     let dir = Vec3::new(0.0, 0.0, -1.0); 
     let cam = RustRT::camera::Camera::new(origin, dir);
 
  
     //Configure the output image buffer
-    let image_width = 256; 
+    let image_width = 512; 
     let image_height = 256; 
 
     let mut image_buffer: image::ImageBuffer<image::Rgb<u8>, Vec<u8>> = image::ImageBuffer::new(image_width, image_height); 

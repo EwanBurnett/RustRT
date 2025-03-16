@@ -9,12 +9,12 @@ use crate::camera::Camera;
 
 fn solve_quadratic(a: &f32, b: &f32, c: &f32, t_min: &mut f32, t_max: &mut f32) -> bool {
     
-    let discriminant: f32 = (b * b) - 4.0 * a * c; 
+    let discriminant: f32 = (b * b) - (4.0 * a * c); 
     if(discriminant < 0.0){
          return false; 
     }
-    else if(discriminant <= f32::EPSILON){
-        *t_min = (-0.5 * b / a);  
+    else if(discriminant <= 0.01){
+        *t_min = -0.5 * b / a;  
         *t_max = *t_min; 
     }
 
@@ -38,14 +38,16 @@ fn solve_quadratic(a: &f32, b: &f32, c: &f32, t_min: &mut f32, t_max: &mut f32) 
 fn ray_sphere_intersects(ray: &Ray) -> bool{
     //Red sphere of justice!
     let pos = Vec3::new(0.0, 0.0, 0.0); 
-    let radius: f32 = 0.5; 
+    let radius: f32 = 1.0; 
     {
         
-        let to_center = ray.origin - pos; 
+        let to_center = (ray.origin - pos); 
+        //println!("to_center = {}, {}, {}", to_center.x, to_center.y, to_center.z); 
         let s_a = Vec3::dot(&ray.direction, &ray.direction); 
         let s_b = 2.0 * Vec3::dot(&ray.direction, &to_center); 
         let s_c = Vec3::dot(&to_center, &to_center) - (radius * radius); 
 
+        //println!("a: {}, b: {}, c: {}", s_a, s_b, s_c); 
         let mut t_min: f32 = 0.0; 
         let mut t_max: f32 = 0.0; 
 
