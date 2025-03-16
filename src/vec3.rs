@@ -165,12 +165,12 @@ mod test{
     #[test]
     fn vec3_dot_vec3(){
         //The Dot product of two vectors yields the cosine of the angle between them. 
-        let v0 : Vec3 = Vec3::new(0.0, 1.0, 1.0); 
-        let v1 : Vec3 = Vec3::new(1.0, 0.0, 1.0); 
+        let v0 : Vec3 = Vec3::new(0.0, 1.0, 0.0); 
+        let v1 : Vec3 = Vec3::new(1.0, 0.0, 0.0); 
 
         let theta: f32 = Vec3::dot(&v0, &v1); 
 
-        assert_eq!(theta, 1.0); 
+        assert_eq!(theta, 0.0); 
     }
     
 

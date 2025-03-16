@@ -38,7 +38,7 @@ impl Camera{
     }
 
     pub fn gen_ray(&self, dx: f32, dy: f32) -> Ray{ 
-        let origin =  Vec3::new(0.0, 0.0, 0.0); 
+        let origin = self.origin;
         let direction = ((self.right * dx) + (self.up * dy) + self.forwards).normalize(); 
 
         return Ray{origin, direction};

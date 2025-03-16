@@ -7,6 +7,7 @@ fn main() {
     println!("Hello, world!");
 
     //DEBUGGING - Vec3 testing 
+    /*
     {
         let mut v0 : Vec3 = Vec3::new(100.0, 100.0, 0.0); 
         v0.normalize();
@@ -22,6 +23,7 @@ fn main() {
         let sum = v0 - v1; 
         println!("sum = {}, {}, {}", sum.x, sum.y, sum.z);
     }
+    */
 
 
     //Set up the Camera
