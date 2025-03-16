@@ -1,6 +1,8 @@
 
 use std::f32::consts::PI;
 
+use std::vec;
+
 use image::ImageBuffer; 
 use crate::vec3::Vec3; 
 use crate::ray::Ray;
@@ -9,7 +11,7 @@ use crate::rayhit::RayHit;
 use crate::sphere::Sphere; 
 
 
-pub fn render(camera : &Camera, img_buf: &mut ImageBuffer<image::Rgb<u8>, Vec<u8>>){
+pub fn render(camera : &Camera, scene : &Vec<Sphere>, img_buf: &mut ImageBuffer<image::Rgb<u8>, Vec<u8>>){
     let width: u32 = img_buf.width(); 
     let height: u32 = img_buf.height(); 
 
@@ -17,7 +19,7 @@ pub fn render(camera : &Camera, img_buf: &mut ImageBuffer<image::Rgb<u8>, Vec<u8
 
     
     
-    let sphere : Sphere = Sphere::new(Vec3{x: 0.0, y: 0.0, z: 0.0}, 1.0); 
+    //let sphere : Sphere = Sphere::new(Vec3{x: 0.0, y: 0.0, z: 0.0}, 1.0); 
 
     //Render the image
     for(x, y, pixel) in img_buf.enumerate_pixels_mut()
@@ -38,7 +40,9 @@ pub fn render(camera : &Camera, img_buf: &mut ImageBuffer<image::Rgb<u8>, Vec<u8
         let beta = 4.0 * -f32::tan(fov_y / 2.0) * ((y as f32 - (height as f32 / 2.0)) / (height as f32 / 2.0));
         
         let r = camera.gen_ray(alpha, beta); 
-        let mut p = Vec3::new(0.0, 0.0, 0.0); // = r.at(1.0); 
+        let mut p = Vec3::new(0.0, 0.0, 1.0);   //Clear Colour
+        
+        // = r.at(1.0); 
         /*
         println!("[{}, {}]\no = {}, {}, {}\nd: {}, {}, {}, at 5.0 = {}, {}, {}",
         x, y, 
@@ -48,23 +52,25 @@ pub fn render(camera : &Camera, img_buf: &mut ImageBuffer<image::Rgb<u8>, Vec<u8
         );
         */
 
-        let mut ray_hit : RayHit = RayHit::new();  
-        if(sphere.intersects(&r, &mut ray_hit))
-        {
-            //println!("ray!");
-            //p = ray_hit.position; 
-            //p = ray_hit.normal; 
-            //p = ray_hit.uv; 
+        for sphere in scene {
+            let mut ray_hit : RayHit = RayHit::new();  
+            if(sphere.intersects(&r, &mut ray_hit))
+            {
+                //println!("ray!");
+                //p = ray_hit.position; 
+                //p = ray_hit.normal; 
+                //p = ray_hit.uv; 
 
-            //Apply some simple lambertian lighting
-            let light_dir : Vec3 = Vec3::new(0.5, 0.5, 0.5); 
-            let light_colour : Vec3 = Vec3::new(0.7, 0.7, 0.7); 
-            let light_intensity : f32 = 1.0; 
+                //Apply some simple lambertian lighting
+                let light_dir : Vec3 = Vec3::new(0.5, 0.5, 0.5); 
+                let light_colour : Vec3 = Vec3::new(0.7, 0.7, 0.7); 
+                let light_intensity : f32 = 1.0; 
 
-            let n_dot_l : f32 = f32::max(Vec3::dot(&light_dir, &ray_hit.normal), 0.0); 
+                let n_dot_l : f32 = f32::max(Vec3::dot(&light_dir, &ray_hit.normal), 0.0); 
 
-            p = light_colour * light_intensity * n_dot_l; 
+                p =   (light_colour * light_intensity * n_dot_l); 
 
+            }
         }
 
 

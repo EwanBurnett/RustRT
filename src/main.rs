@@ -1,6 +1,6 @@
 use std::f32::consts::PI;
 
-use RustRT::{vec3::{self, Vec3}, renderer::render, camera::{self, Camera}};
+use RustRT::{vec3::{self, Vec3}, renderer::render, camera::{self, Camera}, sphere::{self, Sphere}};
 
 
 fn main() {
@@ -38,7 +38,12 @@ fn main() {
 
     let mut image_buffer: image::ImageBuffer<image::Rgb<u8>, Vec<u8>> = image::ImageBuffer::new(image_width, image_height); 
 
-    render(&cam, &mut image_buffer); 
+    let mut scene : Vec<Sphere> = vec![]; 
+    for i in 1..10{
+        scene.push(Sphere::new(Vec3{x: f32::sin((i - 5) as f32), y: f32::cos(i as f32), z: 0.0}, 0.2));
+    } 
+
+    render(&cam, &mut scene, &mut image_buffer); 
 
     image_buffer.save("image.png").unwrap(); 
 }
