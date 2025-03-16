@@ -52,9 +52,19 @@ pub fn render(camera : &Camera, img_buf: &mut ImageBuffer<image::Rgb<u8>, Vec<u8
         if(sphere.intersects(&r, &mut ray_hit))
         {
             //println!("ray!");
-            p = ray_hit.position; 
+            //p = ray_hit.position; 
             //p = ray_hit.normal; 
             //p = ray_hit.uv; 
+
+            //Apply some simple lambertian lighting
+            let light_dir : Vec3 = Vec3::new(0.5, 0.5, 0.5); 
+            let light_colour : Vec3 = Vec3::new(0.7, 0.7, 0.7); 
+            let light_intensity : f32 = 1.0; 
+
+            let n_dot_l : f32 = f32::max(Vec3::dot(&light_dir, &ray_hit.normal), 0.0); 
+
+            p = light_colour * light_intensity * n_dot_l; 
+
         }
 
 
