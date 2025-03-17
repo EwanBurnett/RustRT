@@ -4,6 +4,7 @@ use std::f32::consts::PI;
 use image::ImageBuffer; 
 use crate::vec3::Vec3; 
 use crate::camera::Camera; 
+use crate::ray::Ray; 
 use crate::rayhit::RayHit; 
 use crate::sphere::Sphere; 
 
@@ -39,13 +40,35 @@ pub fn render(camera : &Camera, scene : &Vec<Sphere>, img_buf: &mut ImageBuffer<
                 //Apply some simple lambertian lighting
                 if(ray_hit.t < max_depth){
                     max_depth = ray_hit.t; 
-                    let light_dir : Vec3 = Vec3::new(0.5, 0.5, 0.5); 
-                    let light_colour : Vec3 = Vec3::new(0.7, 0.7, 0.7); 
+                    let light_dir : Vec3 = Vec3::new(0.0, 1.0, 0.0).normalize(); 
+                    let light_colour : Vec3 = Vec3::new(0.7, 0.1, 0.1); 
                     let light_intensity : f32 = 1.0; 
+
+
+                    //Trace a shadow ray
+                    //from hit point to light source
+                    let mut in_shadow : bool = false; 
+                    {
+                        let shadow_bias : Vec3 =  ray_hit.normal * 0.01; 
+                        let shadow_ray : Ray = Ray::new(ray_hit.position + shadow_bias, light_dir); 
+                        let mut shadow_hit : RayHit = RayHit::new(); 
+
+                        for shadow_sphere in scene{ 
+                            if(shadow_sphere.intersects(&shadow_ray, &mut shadow_hit)){
+                                in_shadow = true;  
+                                break;
+                            }
+                        }
+                    }
 
                     let n_dot_l : f32 = f32::max(Vec3::dot(&light_dir, &ray_hit.normal), 0.0); 
 
-                    p = (light_colour * light_intensity * n_dot_l); 
+                    let mut shadowf : f32 = 0.0; 
+                    if !in_shadow {
+                        shadowf = 1.0; 
+                    }
+                        
+                    p = light_colour * light_intensity * n_dot_l * shadowf; 
                 }
 
             }

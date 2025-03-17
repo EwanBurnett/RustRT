@@ -17,9 +17,14 @@ fn main() {
 
     //Set up a simple scene. 
     let mut scene : Vec<Sphere> = vec![]; 
+    scene.push(Sphere::new(Vec3{x: 0.6, y: 1.0, z: 0.0}, 0.5));
+    scene.push(Sphere::new(Vec3{x: 1.0, y: -1.0, z: 0.0}, 0.5));
+    scene.push(Sphere::new(Vec3{x: -1.0, y: -1.0, z: 0.0},0.5));
+    /*
     for i in 0..10{
         scene.push(Sphere::new(Vec3{x: 0.0, y: f32::cos(i as f32) * 2.0, z: f32::sin((i - 5) as f32)}, 0.5));
     } 
+    */
 
     render(&cam, &mut scene, &mut image_buffer); 
 
