@@ -8,3 +8,4 @@ pub mod primitive;
 pub mod sphere;
 pub mod solver; 
 pub mod colour; 
+pub mod matrix4x4; 

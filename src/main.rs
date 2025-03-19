@@ -1,4 +1,4 @@
-use RustRT::{vec3::Vec3, renderer::render, camera::Camera, sphere::Sphere};
+use RustRT::{vec3::Vec3, matrix4x4::Matrix4x4, renderer::render, camera::Camera, sphere::Sphere};
 
 
 fn main() {
@@ -25,6 +25,11 @@ fn main() {
         scene.push(Sphere::new(Vec3{x: 0.0, y: f32::cos(i as f32) * 2.0, z: f32::sin((i - 5) as f32)}, 0.5));
     } 
     */
+
+    let a = Matrix4x4::new(); 
+    let b = Matrix4x4::new(); 
+
+    let c = a * b; 
 
     render(&cam, &mut scene, &mut image_buffer); 
 
