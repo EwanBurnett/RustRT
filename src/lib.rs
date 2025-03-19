@@ -6,4 +6,4 @@ pub mod rayhit;
 pub mod primitive;
 pub mod sphere;
 pub mod solver; 
-
+pub mod colour; 

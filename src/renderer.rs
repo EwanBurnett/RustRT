@@ -7,6 +7,7 @@ use crate::camera::Camera;
 use crate::ray::Ray; 
 use crate::rayhit::RayHit; 
 use crate::sphere::Sphere; 
+use crate::colour::ColourRGBA; 
 
 
 pub fn render(camera : &Camera, scene : &Vec<Sphere>, img_buf: &mut ImageBuffer<image::Rgb<u8>, Vec<u8>>){
@@ -29,7 +30,7 @@ pub fn render(camera : &Camera, scene : &Vec<Sphere>, img_buf: &mut ImageBuffer<
         
         let r = camera.gen_ray(alpha, beta); 
 
-        let mut p = Vec3::new(0.0, 0.0, 1.0);   //Clear Colour
+        let mut colour_vec3 = Vec3::new(0.0, 0.0, 1.0);   //Clear Colour
         
         let mut max_depth = INFINITY; 
 
@@ -68,21 +69,19 @@ pub fn render(camera : &Camera, scene : &Vec<Sphere>, img_buf: &mut ImageBuffer<
                         shadowf = 1.0; 
                     }
                         
-                    p = light_colour * light_intensity * n_dot_l * shadowf; 
+                    colour_vec3 = light_colour * light_intensity * n_dot_l * shadowf; 
                 }
 
             }
         }
 
 
-        let r: f32 = p.x; 
-        let g: f32 = p.y; 
-        let b: f32 = p.z; 
+        let colour_rgba = ColourRGBA::new_vec3(&colour_vec3); 
 
         *pixel = image::Rgb([
-            (r * 255.999) as u8, 
-            (g * 255.999) as u8, 
-            (b * 255.999) as u8 
+            colour_rgba.r, 
+            colour_rgba.g, 
+            colour_rgba.b, 
         ]);
     }
 
