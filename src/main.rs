@@ -1,4 +1,4 @@
-use RustRT::{vec3::Vec3, matrix4x4::Matrix4x4, renderer::render, camera::Camera, sphere::Sphere};
+use RustRT::{vec3::Vec3, vec4::Vec4, matrix4x4::Matrix4x4, renderer::render, camera::Camera, sphere::Sphere};
 
 
 fn main() {
@@ -26,10 +26,19 @@ fn main() {
     } 
     */
 
-    let a = Matrix4x4::new(); 
-    let b = Matrix4x4::new(); 
+    let a = Matrix4x4::scale(&Vec3{x: 3.0, y: -1.0, z: 0.0}); //Matrix4x4::rotation_z(90.0 * (180.0 / 3.1415926)); 
+    let mut b = Matrix4x4::new(); 
+    b._arr[5] = 2.0; 
 
-    let c = a * b; 
+    let mut d = Vec4::new(1.0, 1.0, 1.0, 1.0);
+let e = d * a; 
+
+
+    let c = a * a; 
+
+    for i in 0..4 {
+        println!("{}", e[i]);
+    }
 
     render(&cam, &mut scene, &mut image_buffer); 
 

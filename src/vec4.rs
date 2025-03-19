@@ -1,6 +1,8 @@
 //Vector 4 Implementation
 //Ewan Burnett (EwanBurnettSK@Outlook.com)
 
+use std::{ops::Index, ptr::null}; 
+
 //Stores a 4-component float42 Vector. 
 #[derive(Debug, Copy, Clone)]
 pub struct Vec4{
@@ -88,6 +90,33 @@ impl std::ops::Div<f32> for Vec4 {
 
     fn div(self, _rhs: f32) -> Vec4{
         return Vec4 { x: self.x / _rhs, y: self.y / _rhs, z: self.z / _rhs, w: self.w / _rhs};  
+    }
+}
+
+impl std::ops::Index<usize> for Vec4{
+    type Output = f32;
+
+    fn index(&self, idx: usize) -> &f32{
+        return match (idx % 4){
+            0 => &self.x, 
+            1 => &self.y, 
+            2 => &self.z, 
+            3 => &self.w, 
+            _ => unreachable!() 
+        }
+    }
+}
+impl std::ops::IndexMut<usize> for Vec4{
+    //type Output = f32;
+
+    fn index_mut(&mut self, idx: usize) -> &mut f32{
+        return match (idx){
+            0 => &mut self.x, 
+            1 => &mut self.y, 
+            2 => &mut self.z, 
+            3 => &mut self.w, 
+            _ => unreachable!()
+        }
     }
 }
 

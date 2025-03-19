@@ -1,4 +1,5 @@
 
+use std::ops::Index;
 use std::process::Output;
 
 use crate::vec3::Vec3; 
@@ -83,8 +84,8 @@ impl Matrix4x4{
         let mut mat = Matrix4x4::new(); 
         mat._arr[5] = f32::cos(x); 
         mat._arr[6] = -f32::sin(x); 
-        mat._arr[9] = f32::cos(x); 
-        mat._arr[10] = f32::sin(x); 
+        mat._arr[9] = f32::sin(x); 
+        mat._arr[10] = f32::cos(x); 
         return mat;
     }
     
@@ -92,8 +93,8 @@ impl Matrix4x4{
         let mut mat = Matrix4x4::new();  
         mat._arr[0] = f32::cos(y); 
         mat._arr[2] = -f32::sin(y); 
-        mat._arr[8] = f32::cos(y); 
-        mat._arr[10] = f32::sin(y); 
+        mat._arr[8] = f32::sin(y); 
+        mat._arr[10] = f32::cos(y); 
         
         return mat;
     }
@@ -103,8 +104,8 @@ impl Matrix4x4{
 
         mat._arr[0] = f32::cos(z); 
         mat._arr[1] = -f32::sin(z); 
+        mat._arr[4] = f32::sin(z); 
         mat._arr[5] = f32::cos(z); 
-        mat._arr[6] = f32::sin(z); 
         
         return mat;
     }
@@ -112,7 +113,6 @@ impl Matrix4x4{
     pub fn rotation_xyz(rotation: &Vec3) -> Matrix4x4 
     {
         return Matrix4x4::rotation_x(rotation.x) * (Matrix4x4::rotation_y(rotation.y) * Matrix4x4::rotation_z(rotation.z));
-
     }
 
     pub fn inverse(mat: &mut Matrix4x4, inverseExists: &mut bool) -> Matrix4x4{
@@ -256,13 +256,24 @@ impl Matrix4x4{
 
 }
 
-impl std::ops::Mul<Vec4> for Matrix4x4{
-    type Output = Matrix4x4;
+impl std::ops::Mul<Matrix4x4> for Vec4{
+    type Output = Vec4;
 
-    fn mul(self, rhs : Vec4) -> Matrix4x4{ 
-        let mut mat = Matrix4x4::new(); 
+    fn mul(self, rhs : Matrix4x4) -> Vec4{ 
+        let mut out = Vec4::new(0.0, 0.0, 0.0, 0.0); 
 
-        return mat; 
+        for col in 0..4{
+
+            let col_v = Vec4::new(
+                rhs._arr[(0 * 4) + col],   
+                rhs._arr[(1 * 4) + col],                
+                rhs._arr[(2 * 4) + col], 
+                rhs._arr[(3 * 4) + col], 
+            ); 
+
+            out[col] = Vec4::dot(&self, &col_v); //Dot rows by columns
+        }
+        return out; 
     }
 
 }
@@ -284,15 +295,14 @@ impl std::ops::Mul<Matrix4x4> for Matrix4x4{
             for col in 0..4{
 
                 let col_v = Vec4::new(
-                    self._arr[(row * 4) + col],     //TODO: Does this unroll? 
-                    self._arr[(row * 4) + col],                
-                    self._arr[(row * 4) + col], 
-                    self._arr[(row * 4) + col], 
+                    rhs._arr[(0 * 4) + col],   
+                    rhs._arr[(1 * 4) + col],                
+                    rhs._arr[(2 * 4) + col], 
+                    rhs._arr[(3 * 4) + col], 
                 ); 
 
-                let val =  Vec4::dot(&row_v, &col_v); //Dot rows by columns
-                println!("{}, ", val);
-            
+                //println!("MMULT DOT: Row {}, {}, {} {} dot Col {} {} {} {}", row_v.x, row_v.y, row_v.z, row_v.w, col_v.x, col_v.y, col_v.z, col_v.w); 
+                mat._arr[(row * 4) + col] = Vec4::dot(&row_v, &col_v); //Dot rows by columns
             }
         }
         
