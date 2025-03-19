@@ -1,7 +1,7 @@
 //Vector 4 Implementation
 //Ewan Burnett (EwanBurnettSK@Outlook.com)
 
-use std::{ops::Index, ptr::null}; 
+use crate::vec3::Vec3; 
 
 //Stores a 4-component float42 Vector. 
 #[derive(Debug, Copy, Clone)]
@@ -18,6 +18,10 @@ impl Vec4{
         Vec4{x: _x ,y: _y, z: _z, w: _w}   //Construct a new Vector4 instance. 
     }
 
+    pub fn from_vec3(vec : &Vec3, w : f32) -> Vec4{
+        Vec4{x: vec.x, y: vec.y, z: vec.z, w: w}
+    }
+
 
     pub fn length_squared(&self) -> f32{
         return (self.x * self.x) + (self.y * self.y) + (self.z * self.z) + (self.w * self.w);
@@ -30,7 +34,6 @@ impl Vec4{
     pub fn dot(a: &Vec4, b: &Vec4) -> f32{
         return (a.x * b.x) + (a.y * b.y) + (a.z * b.z) + (a.w * b.w);
     }
-
 
     pub fn normalize(&mut self) -> Self{ 
         let l : f32 = Vec4::length(self);

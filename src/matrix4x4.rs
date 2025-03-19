@@ -115,7 +115,7 @@ impl Matrix4x4{
         return Matrix4x4::rotation_x(rotation.x) * (Matrix4x4::rotation_y(rotation.y) * Matrix4x4::rotation_z(rotation.z));
     }
 
-    pub fn inverse(mat: &mut Matrix4x4, inverseExists: &mut bool) -> Matrix4x4{
+    pub fn inverse(mat: &Matrix4x4, inverseExists: &mut bool) -> Matrix4x4{
 
         let mut inv = Matrix4x4::new(); 
 

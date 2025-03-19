@@ -1,5 +1,6 @@
 //Vector 3 Implementation
 //Ewan Burnett (EwanBurnettSK@Outlook.com)
+use crate::vec4::Vec4;
 
 //Stores a 3-component float32 Vector. 
 #[derive(Debug, Copy, Clone)]
@@ -13,6 +14,10 @@ pub struct Vec3{
 impl Vec3{
     pub fn new(_x: f32, _y: f32, _z: f32) -> Vec3 {
         Vec3{x: _x ,y: _y, z: _z}   //Construct a new Vector3 instance. 
+    }
+
+    pub fn from_vec4(vec: &Vec4) -> Vec3{
+        Vec3{x: vec.x, y: vec.y, z: vec.z} 
     }
 
 

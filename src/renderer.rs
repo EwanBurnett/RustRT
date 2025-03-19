@@ -70,6 +70,8 @@ pub fn render(camera : &Camera, scene : &Vec<Sphere>, img_buf: &mut ImageBuffer<
                     }
                         
                     colour_vec3 = light_colour * light_intensity * n_dot_l * shadowf; 
+                    //colour_vec3 = ray_hit.normal; 
+                    //colour_vec3 = ray_hit.uv; 
                 }
 
             }
