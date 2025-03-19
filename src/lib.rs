@@ -1,4 +1,5 @@
 pub mod vec3;
+pub mod vec4; 
 pub mod camera; 
 pub mod renderer; 
 pub mod ray; 
